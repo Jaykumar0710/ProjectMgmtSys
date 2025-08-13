@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Milestones for Project [[${project.title}]]</h2>
+<a th:href="@{/guide/milestone/create/{id}(id=${project.id})}">+ Add Milestone</a>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th><th>Due Date</th><th>Status</th><th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="m : ${milestones}">
+        <td th:text="${m.title}"></td>
+        <td th:text="${m.dueDate}"></td>
+        <td th:text="${m.status}"></td>
+        <td>
+            <a th:href="@{/guide/milestone/edit/{id}(id=${m.id})}">Edit</a>
+            <a th:href="@{/guide/milestone/delete/{id}(id=${m.id})}" onclick="return confirm('Delete?')">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

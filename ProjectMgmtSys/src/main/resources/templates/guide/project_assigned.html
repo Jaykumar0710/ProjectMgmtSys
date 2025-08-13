@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Assigned Projects</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional FontAwesome for icons (if needed) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar-gradient {
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+        }
+
+        .navbar-brand, .nav-link {
+            color: white !important;
+            font-weight: 600;
+        }
+
+        .navbar-brand {
+            letter-spacing: 1px;
+        }
+
+        .table thead {
+            background-color: #0072ff;
+            color: white;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e3f2fd;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            font-weight: 700;
+            color: #343a40;
+        }
+
+        .form-control-sm {
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .form-control-sm {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-gradient">
+    <div class="container">
+        <a class="navbar-brand" href="#">Project Portal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon bg-light"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/guide/dashboard}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/guide/projects}">My Projects</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+    <div class="card p-4">
+        <h2 class="text-center mb-4">Projects Assigned to You</h2>
+
+        <div th:if="${projects != null and !projects.isEmpty()}">
+            <div class="table-responsive">
+                <table class="table table-hover text-center align-middle">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Domain</th>
+                        <th>Tools</th>
+                        <th>Status</th>
+                        <th>Feedback</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="project : ${projects}">
+                        <td th:text="${project.tittle}">Title</td>
+                        <td th:text="${project.domain}">Domain</td>
+                        <td th:text="${project.tools}">Tools</td>
+                        <td th:text="${project.status}">Status</td>
+                        <td th:text="${project.feedback}">Feedback</td>
+                        <td>
+                            <form th:action="@{'/guide/project/approve/' + ${project.id}}" method="post" class="mb-2">
+                                <input type="text" name="feedback" placeholder="Feedback" class="form-control form-control-sm mb-2" required>
+                                <button type="submit" class="btn btn-success btn-sm w-100">
+                                    <i class="fa fa-check"></i> Approve
+                                </button>
+                            </form>
+
+                            <form th:action="@{'/guide/project/reject/' + ${project.id}}" method="post">
+                                <input type="text" name="feedback" placeholder="Feedback" class="form-control form-control-sm mb-2" required>
+                                <button type="submit" class="btn btn-danger btn-sm w-100">
+                                    <i class="fa fa-times"></i> Reject
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div th:if="${projects == null || projects.isEmpty()}">
+            <p class="text-muted text-center">No projects assigned yet.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Latest Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

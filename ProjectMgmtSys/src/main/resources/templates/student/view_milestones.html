@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Milestones | Student Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap + Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <style>
+        body {
+            background-color: #f4f8fc;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            font-weight: 700;
+            color: #0d6efd;
+            margin-bottom: 2.5rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease-in-out;
+            background-color: #fff;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        .milestone-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0d1b2a;
+        }
+
+        .progress {
+            height: 18px;
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: width 0.6s ease;
+        }
+
+        .guide-comment {
+            background-color: #edf1f5;
+            border-left: 4px solid #0d6efd;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #333;
+        }
+
+        .badge-overdue {
+            background-color: #dc3545;
+        }
+
+        .badge-due {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .badge-secondary {
+            background-color: #6c757d;
+        }
+
+        .no-milestone {
+            padding: 2rem;
+            font-size: 1.1rem;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="/student/dashboard">Student Portal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/student/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/view"><i class="bi bi-folder"></i> My Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/form"><i class="bi bi-pencil-square"></i> Submit Project</a></li>
+                <li class="nav-item"><a class="nav-link active" href="/student/view_milestones"><i class="bi bi-flag"></i> Milestones</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/documents"><i class="bi bi-file-earmark-arrow-up"></i> Documents</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/weekly_report"><i class="bi bi-journal-text"></i> Weekly Reports</a></li>
+                <li class="nav-item"><a class="nav-link " href="/student/grievance/new"><i class="bi bi-chat-left-text"></i> Grievances</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Section -->
+<div class="container my-5">
+    <h2 class="text-center">📈 My Project Milestones</h2>
+
+    <!-- Milestone Cards -->
+    <div class="row justify-content-center" th:if="${not #lists.isEmpty(milestoneCards)}">
+        <div class="col-lg-8 mb-4" th:each="card, iterStat : ${milestoneCards}">
+            <div class="card">
+                <div class="card-body">
+                    <!-- Title -->
+                    <h5 class="milestone-title mb-2" th:text="${card.title}">Milestone Title</h5>
+
+                    <!-- Description -->
+                    <p class="text-muted" th:text="${milestones[iterStat.index].description}">Milestone Description...</p>
+
+                    <!-- Status -->
+                    <p class="mb-1">
+                        <strong>Status:</strong>
+                        <span class="badge bg-info text-dark" th:text="${milestones[iterStat.index].status}">In Progress</span>
+                    </p>
+
+                    <!-- Progress -->
+                    <div class="progress mb-3">
+                        <div class="progress-bar bg-success"
+                             role="progressbar"
+                             th:style="'width:' + ${milestones[iterStat.index].progress} + '%'"
+                             th:text="${milestones[iterStat.index].progress + '%'}">
+                        </div>
+                    </div>
+
+                    <!-- Due Date -->
+                    <p class="mb-1">
+                        <strong>Due Date:</strong>
+                        <span th:text="${card.dueDateFormatted}">10 Aug 2025</span>
+                    </p>
+
+                    <!-- Deadline Status Badge -->
+                    <div class="mb-3">
+                        <span th:if="${card.isOverdue}" class="badge badge-overdue"><i class="bi bi-exclamation-circle"></i> Overdue</span>
+                        <span th:if="${!card.isOverdue and card.dueDate != null}" class="badge badge-due"><i class="bi bi-clock"></i> Due Soon</span>
+                        <span th:if="${card.dueDate == null}" class="badge badge-secondary">No Deadline</span>
+                    </div>
+
+                    <!-- Guide Comment -->
+                    <div>
+                        <strong>Guide Comment:</strong>
+                        <div class="guide-comment" th:text="${milestones[iterStat.index].guideComment != null ? milestones[iterStat.index].guideComment : 'No comment yet.'}">
+                            No comment yet.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fallback -->
+    <div th:if="${#lists.isEmpty(milestoneCards)}" class="text-center no-milestone">
+        <p>No milestones available yet.</p>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

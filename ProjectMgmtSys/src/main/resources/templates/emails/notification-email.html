@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>FYPMS Notification</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
+    .email-container {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin: auto;
+        width: 90%;
+        max-width: 600px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .header {
+        background-color: #6f42c1;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px 8px 0 0;
+        font-size: 18px;
+    }
+    .content {
+        margin: 20px 0;
+    }
+    .footer {
+        margin-top: 30px;
+        font-size: 14px;
+        color: gray;
+    }
+  </style>
+</head>
+<body>
+<div class="email-container">
+  <div class="header">Final Year Project Management System - Notification</div>
+  <div class="content">
+    <p>Dear <strong th:text="${studentName}">Student Name</strong>,</p>
+
+    <p>You have received a new notification.</p>
+
+    <p><strong>Title:</strong> <span th:text="${title}">Notification Title</span></p>
+    <p><strong>Description:</strong><br>
+      <span th:text="${description}">Notification description</span></p>
+    <p><strong>Category:</strong> <span th:text="${category}">Category</span></p>
+
+    <p>Please log in to the FYPMS system for full details and any attachments.</p>
+  </div>
+
+  <div class="footer">
+    Regards,<br>
+    <span th:text="${guideName}">Guide Name</span><br>
+    FYPMS Team
+  </div>
+</div>
+</body>
+</html>

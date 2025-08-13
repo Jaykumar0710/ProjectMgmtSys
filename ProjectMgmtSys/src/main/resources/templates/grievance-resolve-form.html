@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resolve Grievance</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Resolve Student Grievance</h4>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/admin/grievance/resolve}" th:object="${grievance}" method="post">
+                <input type="hidden" th:field="*{id}" />
+                <input type="hidden" th:field="*{user.id}" />
+
+                <div class="mb-3">
+                    <label class="form-label">Subject</label>
+                    <input type="text" th:field="*{subject}" class="form-control" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea th:field="*{message}" class="form-control" rows="4" readonly></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Resolution</label>
+                    <textarea th:field="*{resolution}" class="form-control" rows="4" required></textarea>
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-success">Submit Resolution</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${subject}">Project Notification</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f4f7fa;
+            padding: 20px;
+            color: #333;
+        }
+
+        .email-container {
+            max-width: 650px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(to right, #007bff, #0056b3);
+            padding: 20px 30px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .header img {
+            height: 50px;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .body {
+            padding: 30px;
+            background-color: #ffffff;
+        }
+
+        .body h2 {
+            font-size: 22px;
+            color: #343a40;
+            margin-bottom: 15px;
+        }
+
+        .body p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            font-weight: 600;
+            color: #0056b3;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #007bff;
+            color: #ffffff !important;
+            text-decoration: none;
+            padding: 12px 28px;
+            margin-top: 20px;
+            font-weight: 500;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .footer {
+            background-color: #f1f1f1;
+            padding: 18px 30px;
+            font-size: 13px;
+            text-align: center;
+            color: #6c757d;
+        }
+
+        .footer a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media screen and (max-width: 600px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header img {
+                margin-bottom: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="email-container">
+    <!-- Header -->
+    <div class="header">
+        <img src="https://media.istockphoto.com/id/1442426608/vector/graduation-cap-icon-vector-design-template-in-white-background.jpg?s=612x612&w=0&k=20&c=i7RKvIgQt3H7ezb4fvu9aE7n2AoCD_89HELOEhGQqkI=" alt="EnggProjectPro Logo">
+        <h1>EnggProjectPro</h1>
+    </div>
+
+    <!-- Body -->
+    <div class="body">
+        <h2 th:text="${heading}">📢 Project Notification</h2>
+
+        <p th:text="${bodyText}">
+            Your project status has been updated. Please check the portal for further information.
+        </p>
+
+        <p th:if="${projectTitle != null}">
+            <strong>Project Title:</strong> <span class="highlight" th:text="${projectTitle}">Smart Campus Monitoring</span>
+        </p>
+
+        <p th:if="${feedback != null}">
+            <strong>Guide Feedback:</strong> <span th:text="${feedback}">Well documented, proceed to implementation phase.</span>
+        </p>
+
+        <a class="btn" href="http://localhost:8081/login" target="_blank">🔗 Go to Portal</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        &copy; 2025 EnggProjectPro | Final Year Project Management System <br>
+        BAIF Road, Wagholi, Pune – 412207 |
+        <a href="mailto:support@enggprojectpro.com">support@enggprojectpro.com</a>
+    </div>
+</div>
+
+</body>
+</html>

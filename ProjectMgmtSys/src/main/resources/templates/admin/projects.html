@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Projects List</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+    </style>
+</head>
+<body>
+<h1>Project List</h1>
+
+<form method="get" th:action="@{/projects}">
+    <input type="text" name="keyword" placeholder="Search by keyword" th:value="${keyword}">
+    <select name="role">
+        <option value="">All Roles</option>
+        <option value="STUDENT" th:selected="${role == 'STUDENT'}">Student</option>
+        <option value="GUIDE" th:selected="${role == 'GUIDE'}">Guide</option>
+    </select>
+    <button type="submit">Search</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Domain</th>
+        <th>Status</th>
+        <th>Student</th>
+        <th>Guide</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="project : ${project}">
+        <td th:text="${project.tittle}">Title</td>
+        <td th:text="${project.domain}">Domain</td>
+        <td th:text="${project.status}">Status</td>
+        <td th:text="${project.student?.name}">Student</td>
+        <td th:text="${project.guide?.name}">Guide</td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Pagination -->
+<div>
+    <ul>
+        <li th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/projects(page=${i}, size=${5}, keyword=${keyword}, role=${role})}"
+               th:text="${i + 1}" th:classappend="${i == currentPage} ? 'active' : ''">Page</a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

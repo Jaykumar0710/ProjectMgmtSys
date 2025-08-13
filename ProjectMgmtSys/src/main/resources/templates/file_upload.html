@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Project Document</title>
+
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .container {
+            max-width: 800px;
+            margin-top: 40px;
+        }
+        .progress {
+            height: 25px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="mb-4">Upload Project Document</h2>
+
+    <!-- Flash Message -->
+    <div th:if="${msg}" class="alert alert-info" th:text="${msg}"></div>
+
+    <!-- Upload Form -->
+    <form th:action="@{/student/project/upload}" method="post" enctype="multipart/form-data" id="uploadForm">
+        <div class="mb-3">
+            <label class="form-label">Document Type:</label>
+            <select class="form-select" name="documentType" required>
+                <option value="SYNOPSIS">Synopsis</option>
+                <option value="REPORT">Final Report</option>
+                <option value="PPT">Presentation</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Choose File:</label>
+            <input class="form-control" type="file" name="file" id="fileInput" accept=".pdf,.docx,.ppt,.pptx" required>
+            <small class="text-muted">Allowed: PDF, DOCX, PPT (Max: 5 MB)</small>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress mb-3" style="display: none;" id="progressBarContainer">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" id="progressBar" style="width: 0%;">0%</div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Upload</button>
+    </form>
+
+    <!-- Uploaded Files Table -->
+    <h3 class="mt-5">Uploaded Files</h3>
+    <table class="table table-bordered table-striped mt-3">
+        <thead class="table-dark">
+        <tr>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Version</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="doc : ${documents}">
+            <td th:text="${doc.documentType}"></td>
+            <td th:text="${doc.fileName}"></td>
+            <td th:text="${doc.version}"></td>
+            <td th:text="${#temporals.format(doc.uploadedAt, 'dd-MM-yyyy HH:mm')}"></td>
+            <td>
+                <!-- Download Button -->
+                <a th:href="@{'/student/project/download/' + ${doc.id}}" class="btn btn-success btn-sm">Download</a>
+
+                <!-- Delete Button -->
+                <a th:href="@{'/student/project/delete/' + ${doc.id}}" class="btn btn-danger btn-sm ms-2"
+                   onclick="return confirm('Are you sure you want to delete this file?');">Delete</a>
+
+                <!-- Preview Button (PDF only) -->
+                <button type="button"
+                        th:if="${#strings.endsWith(doc.fileName.toLowerCase(), '.pdf')}"
+                        th:attr="data-url=@{'/student/project/download/' + ${doc.id}}"
+                        onclick="previewPDF(this)"
+                        class="btn btn-warning btn-sm ms-2">
+                    Preview
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bootstrap JS + Progress Bar Script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const fileInput = document.getElementById("fileInput");
+    const uploadForm = document.getElementById("uploadForm");
+    const progressBar = document.getElementById("progressBar");
+    const progressBarContainer = document.getElementById("progressBarContainer");
+
+    // File Size Check + Simulated Progress Bar
+    uploadForm.addEventListener("submit", function (e) {
+        const file = fileInput.files[0];
+        if (file && file.size > 5 * 1024 * 1024) { // 5 MB limit
+            alert("File size exceeds 5 MB!");
+            e.preventDefault();
+            return;
+        }
+
+        progressBarContainer.style.display = "block";
+
+        // Simulated Progress Bar
+        let percent = 0;
+        const interval = setInterval(() => {
+            percent += 10;
+            progressBar.style.width = percent + "%";
+            progressBar.textContent = percent + "%";
+            if (percent >= 100) clearInterval(interval);
+        }, 200);
+    });
+
+    // PDF Preview Function
+    function previewPDF(button) {
+        const fileUrl = button.getAttribute("data-url");
+        const pdfFrame = document.getElementById("pdfFrame");
+        pdfFrame.src = fileUrl;
+
+        const previewModal = new bootstrap.Modal(document.getElementById("pdfPreviewModal"));
+        previewModal.show();
+    }
+</script>
+
+<!-- PDF Preview Modal -->
+<div class="modal fade" id="pdfPreviewModal" tabindex="-1" aria-labelledby="pdfPreviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="pdfPreviewModalLabel">PDF Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfFrame" src="" width="100%" height="600px" style="border:none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

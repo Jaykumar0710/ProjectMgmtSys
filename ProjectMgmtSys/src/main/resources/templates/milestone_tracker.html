@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Milestone Tracker</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Milestone</th>
+    <th>Due Date</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="m : ${milestones}">
+    <td th:text="${m.name}"></td>
+    <td th:text="${#temporals.format(m.dueDate, 'dd MMM yyyy')}"></td>
+    <td th:text="${m.status}"></td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

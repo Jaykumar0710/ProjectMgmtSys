@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Teammate</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="container mt-5">
+
+<h2>Add Teammate</h2>
+
+<form th:action="@{/student/add}" th:object="${member}" method="post">
+    <input type="hidden" th:name="projectId" th:value="${projectId}" />
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Name:</label>
+        <input type="text" th:field="*{name}" class="form-control" required/>
+    </div>
+    <div class="mb-3">
+        <label for="rollNumber" class="form-label">Roll Number:</label>
+        <input type="text" th:field="*{rollNumber}" class="form-control" required/>
+    </div>
+    <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" th:field="*{email}" class="form-control" required/>
+    </div>
+    <div class="mb-3">
+        <label for="roleInProject" class="form-label">Role in Project:</label>
+        <input type="text" th:field="*{roleInProject}" class="form-control" required/>
+    </div>
+
+    <button type="submit" class="btn btn-success">Add</button>
+    <a th:href="@{/student/projects}" class="btn btn-secondary">Cancel</a>
+</form>
+
+</body>
+</html>

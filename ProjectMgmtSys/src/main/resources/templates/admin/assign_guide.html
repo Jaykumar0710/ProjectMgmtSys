@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Assign Guide to Projects</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #f8f9fa, #e2e6ea);
+      min-height: 100vh;
+    }
+    .navbar {
+      background: linear-gradient(to right, #007bff, #00c6ff);
+    }
+    .navbar-brand, .nav-link {
+      color: white !important;
+      font-weight: 500;
+    }
+    .navbar-brand:hover, .nav-link:hover {
+      color: #e0e0e0 !important;
+    }
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 25px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <a class="navbar-brand" th:href="@{/admin/dashboard}">EnggProjectPro</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/projects}">Projects</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/admin/guides}">Guides</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/logout}">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container mt-5">
+  <h2>Assign Guide to Pending Projects</h2>
+  <table class="table table-bordered table-striped">
+    <thead class="table-primary">
+    <tr>
+      <th>Project Title</th>
+      <th>Student</th>
+      <th>Assign Guide</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="project : ${projects}">
+      <td th:text="${project.tittle}">Project Title</td>
+      <td th:text="${project.student != null ? project.student.name : 'N/A'}">Student Name</td>
+      <td>
+        <form th:action="@{/admin/assign-guide}" method="post" class="d-flex flex-column flex-md-row gap-2">
+          <input type="hidden" name="projectId" th:value="${project.id}"/>
+          <select name="guideId" class="form-select" required>
+            <option value="">-- Select Guide --</option>
+            <option th:each="guide : ${guides}"
+                    th:value="${guide.id}"
+                    th:text="${guide.name + ' (' + guide.email + ')'}">
+            </option>
+          </select>
+          <button type="submit" class="btn btn-success">Assign</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

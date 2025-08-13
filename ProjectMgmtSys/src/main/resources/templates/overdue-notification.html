@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Overdue Milestone Reminder</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            padding: 30px;
+            margin: 0;
+        }
+
+        .email-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 620px;
+            margin: auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e1e5ec;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        .title {
+            font-size: 22px;
+            color: #d00000;
+            margin: 0;
+        }
+
+        p {
+            font-size: 15px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        strong {
+            color: #000;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            background-color: #d00000;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #999;
+            margin-top: 40px;
+            text-align: center;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="email-container">
+
+    <!-- Header -->
+    <div class="header">
+        <img src="data:image/png;base64,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" alt="Project Logo" class="logo">
+        <h2 class="title" th:text="${heading}">⚠️ Overdue Milestone</h2>
+    </div>
+
+    <p>Dear <strong th:text="${studentName}">Student</strong>,</p>
+
+    <p>Your milestone titled
+        <strong th:text="${milestoneTitle}">Milestone Title</strong> for the project
+        <strong th:text="${projectTitle}">Project Title</strong> was due on
+        <strong th:text="${dueDate}">2025-08-10</strong>.
+    </p>
+
+    <p>Please take immediate action to complete this milestone and coordinate with your guide if necessary.</p>
+
+    <p>You can view the milestone and submit updates via your dashboard below:</p>
+    <a href="https://yourdomain.com/student/dashboard" class="btn">Go to Dashboard</a>
+
+    <p style="margin-top: 30px;">Best regards,<br>
+        <strong>Project Management System</strong></p>
+
+    <div class="footer">
+        This is an automated notification. Do not reply to this email.
+    </div>
+</div>
+</body>
+</html>

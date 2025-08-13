@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/guide/milestone/save}" method="post">
+    <input type="hidden" th:field="*{id}" />
+    <input type="hidden" th:field="*{project.id}" />
+
+    <label>Title:</label>
+    <input type="text" th:field="*{title}" required />
+
+    <label>Description:</label>
+    <textarea th:field="*{description}" required></textarea>
+
+    <label>Due Date:</label>
+    <input type="date" th:field="*{dueDate}" required />
+
+    <label>Status:</label>
+    <select th:field="*{status}">
+        <option th:value="PENDING">PENDING</option>
+        <option th:value="IN_PROGRESS">IN_PROGRESS</option>
+        <option th:value="COMPLETED">COMPLETED</option>
+    </select>
+
+    <button type="submit">Save Milestone</button>
+</form>
+
+</body>
+</html>

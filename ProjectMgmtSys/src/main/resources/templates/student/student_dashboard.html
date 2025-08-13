@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Student Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet"/>
+
+    <!-- Bootstrap 5.3 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+
+        .card {
+            border-radius: 16px;
+            border: none;
+            transition: 0.3s all ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+        }
+
+        .dashboard-title {
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .badge-status {
+            font-size: 0.85rem;
+            padding: 0.4em 0.8em;
+        }
+
+        .team-member {
+            font-size: 0.95rem;
+        }
+
+        .milestone-card {
+            border-left: 6px solid #0d6efd;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .badge-overdue {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .badge-due {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .badge-secondary {
+            background-color: #6c757d;
+        }
+
+        .footer {
+            margin-top: 60px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/student/dashboard">Student Portal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMenu">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="/student/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/view"><i class="bi bi-folder"></i> My Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/form"><i class="bi bi-pencil-square"></i> Submit Project</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/view_milestones"><i class="bi bi-flag"></i> Milestones</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/documents"><i class="bi bi-file-earmark-arrow-up"></i> Documents</a></li>
+                <li class="nav-item"><a class="nav-link" href="/student/weekly_report"><i class="bi bi-journal-text"></i> Weekly Reports</a></li>
+                <li class="nav-item"><a class="nav-link " href="/student/grievance/new"><i class="bi bi-chat-left-text"></i> Grievances</a></li>
+
+                <li class="nav-item"><a class="nav-link" href="/logout"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Dashboard Content -->
+<!-- Main Dashboard Content -->
+<div class="container mt-5">
+    <h2 class="dashboard-title text-center">Welcome to Your Final Year Project Dashboard</h2>
+
+    <div class="row">
+        <!-- Left Column: Project Details -->
+        <div class="col-md-8">
+            <div th:if="${projects.isEmpty()}" class="alert alert-info text-center">You haven't submitted any project yet.</div>
+
+            <div class="row row-cols-1 g-4" th:if="${not #lists.isEmpty(projects)}">
+                <div class="col" th:each="project : ${projects}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${project.tittle}">Project Title</h5>
+                            <p><strong>Domain:</strong> <span th:text="${project.domain}"></span></p>
+                            <p><strong>Project Head:</strong> <span th:text="${project.student.name}"></span></p>
+
+                            <p><strong>Status:</strong> <span class="badge bg-info text-dark badge-status" th:text="${project.status}"></span></p>
+                            <p><strong>Feedback:</strong> <span th:text="${project.feedback}">Waiting for feedback</span></p>
+                            <p><strong>Guide:</strong> <span th:if="${project.guide != null}" th:text="${project.guide.name}">Guide Name</span><span th:if="${project.guide == null}">Not Assigned</span></p>
+
+                            <h6 class="mt-3 mb-2">Team Members</h6>
+                            <div th:if="${not #lists.isEmpty(project.teamMembers)}" class="table-responsive">
+                                <table class="table table-sm table-striped table-bordered align-middle text-center">
+                                    <thead class="table-primary">
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Roll No</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="member : ${project.teamMembers}">
+                                        <td th:text="${member.name}">Name</td>
+                                        <td th:text="${member.rollNumber}">Roll</td>
+                                        <td th:text="${member.email}">Email</td>
+                                        <td th:text="${member.roleInProject}">Role</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p th:if="${#lists.isEmpty(project.teamMembers)}" class="text-muted">No team members added yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Milestones Section -->
+            <h3 class="mt-5">Milestones</h3>
+            <div th:if="${#lists.isEmpty(milestoneCards)}" class="alert alert-secondary text-center">No milestones found for your project.</div>
+
+            <div class="row row-cols-1 g-4" th:if="${not #lists.isEmpty(milestoneCards)}">
+                <div class="col" th:each="card : ${milestoneCards}">
+                    <div class="card milestone-card">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${card.title}">Milestone Title</h5>
+                            <p>Due Date: <span th:text="${card.dueDateFormatted != null ? card.dueDateFormatted : 'Not Set'}"></span></p>
+
+                            <span th:if="${card.isOverdue}" class="badge badge-overdue"><i class="bi bi-exclamation-circle"></i> Overdue</span>
+                            <span th:if="${!card.isOverdue && card.dueDate != null}" class="badge badge-due"><i class="bi bi-clock"></i> Due Soon</span>
+                            <span th:if="${card.dueDate == null}" class="badge badge-secondary">No Deadline</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Quick Access Cards -->
+        <div class="col-md-4">
+            <div class="row row-cols-1 g-3">
+                <!-- Repeat for each quick-access card -->
+                <div class="col">
+                    <a href="/student/dashboard" class="text-decoration-none">
+                        <div class="card shadow-sm p-3 border-start border-primary border-4 animate__animated animate__fadeInRight h-100">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-speedometer2 fs-3 text-primary me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Dashboard</h6>
+                                    <small class="text-muted">Overview & status</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/student/view" class="text-decoration-none">
+                        <div class="card shadow-sm p-3 border-start border-success border-4 animate__animated animate__fadeInRight h-100">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-folder fs-3 text-success me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">My Projects</h6>
+                                    <small class="text-muted">Manage submissions</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/student/form" class="text-decoration-none">
+                        <div class="card shadow-sm p-3 border-start border-warning border-4 animate__animated animate__fadeInRight h-100">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-pencil-square fs-3 text-warning me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Submit Project</h6>
+                                    <small class="text-muted">Upload details</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/student/view_milestones" class="text-decoration-none">
+                        <div class="card shadow-sm p-3 border-start border-info border-4 animate__animated animate__fadeInRight h-100">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-flag fs-3 text-info me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Milestones</h6>
+                                    <small class="text-muted">Track deadlines</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/student/documents" class="text-decoration-none">
+                        <div class="card shadow-sm p-3 border-start border-dark border-4 animate__animated animate__fadeInRight h-100">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-file-earmark-arrow-up fs-3 text-dark me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Documents</h6>
+                                    <small class="text-muted">Upload/view files</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/student/weekly_report" class="text-decoration-none">
+                        <div class="card shadow-sm p-3 border-start border-secondary border-4 animate__animated animate__fadeInRight h-100">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-journal-text fs-3 text-secondary me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Weekly Reports</h6>
+                                    <small class="text-muted">Progress updates</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col">
+                    <a href="/student/grievance/new" class="text-decoration-none">
+                        <div class="card shadow-sm p-3 border-start border-danger border-4 animate__animated animate__fadeInRight h-100">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-chat-left-text fs-3 text-danger me-3"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-1 text-dark">Grievances</h6>
+                                    <small class="text-muted">Raise your concerns</small>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--    <h3 class="mt-5">Milestones</h3>-->
+<!--    <div th:if="${#lists.isEmpty(milestoneCards)}" class="alert alert-secondary text-center">No milestones found for your project.</div>-->
+
+<!--    <div class="row row-cols-1 row-cols-md-3 g-4" th:if="${not #lists.isEmpty(milestoneCards)}">-->
+<!--        <div class="col" th:each="card : ${milestoneCards}">-->
+<!--            <div class="card milestone-card">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title" th:text="${card.title}">Milestone Title</h5>-->
+<!--                    <p>Due Date: <span th:text="${card.dueDateFormatted != null ? card.dueDateFormatted : 'Not Set'}"></span></p>-->
+
+<!--                    <span th:if="${card.isOverdue}" class="badge badge-overdue"><i class="bi bi-exclamation-circle"></i> Overdue</span>-->
+<!--                    <span th:if="${!card.isOverdue && card.dueDate != null}" class="badge badge-due"><i class="bi bi-clock"></i> Due Soon</span>-->
+<!--                    <span th:if="${card.dueDate == null}" class="badge badge-secondary">No Deadline</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!-- Footer -->
+<div class="footer">&copy; 2025 EnggProjectPro | Powered by Java Spring Boot + Thymeleaf + Bootstrap</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
