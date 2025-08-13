@@ -1,47 +1,49 @@
 # 📚 College Project Management System
 
-![Project Logo](ProjectMgmtSys/src/main/resources/static/img/logo.png)
+<p align="center">
+  <img src="ProjectMgmtSys/src/main/resources/static/img/logo.png" alt="Project Logo" width="100" height="100">
+</p>
 
 A **comprehensive and innovative web-based platform** designed to streamline the **management and coordination of academic projects** in engineering colleges.  
-It replaces outdated manual processes with **real-time collaboration**, **centralized data storage**, and **automated notifications** for **students**, **faculty guides**, and **administrators**.
+It eliminates outdated manual processes with **real-time collaboration**, **centralized data storage**, and **automated notifications** for **students**, **faculty guides**, and **administrators**.
 
 ---
 
 ## 🚀 Features
 
-- **Role-Based Access Control**:
-  - **Administrator** – Manage accounts, assign guides, oversee projects, and track batch progress.
-  - **Guide** – Mentor assigned students, review documents, track milestones, and give feedback.
-  - **Student** – Submit documents, receive guidance, track deadlines, and monitor progress.
+### 🔹 Role-Based Access Control
+- **Administrator** – Manage accounts, assign guides, oversee projects, and track batch progress.
+- **Guide** – Mentor assigned students, review documents, track milestones, and provide feedback.
+- **Student** – Submit documents, receive guidance, track deadlines, and monitor progress.
 
-- **Project Lifecycle Management**:
-  - Project allocation and tracking
-  - Document submission & storage
-  - Milestone monitoring
-  - Progress tracking & reports
+### 🔹 Project Lifecycle Management
+- Project allocation & tracking  
+- Document submission & storage  
+- Milestone monitoring  
+- Progress tracking & reports  
 
-- **Real-Time Notifications**:
-  - Email alerts for deadlines, feedback, and updates
+### 🔹 Real-Time Notifications
+- Email alerts for deadlines, feedback, and updates
 
-- **User-Friendly Interface**:
-  - Responsive design using **Bootstrap**
-  - Intuitive navigation and clean layouts
+### 🔹 User-Friendly Interface
+- Responsive design using **Bootstrap**  
+- Intuitive navigation and clean layouts  
 
-- **Data Security & Reliability**:
-  - Built with **Spring Boot**, **Thymeleaf**, and **MySQL**
-  - Secure authentication and role management
+### 🔹 Data Security & Reliability
+- Built with **Spring Boot**, **Thymeleaf**, and **MySQL**  
+- Secure authentication and role management  
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Layer         | Technology Used |
-|---------------|-----------------|
-| **Backend**   | Spring Boot (Java) |
-| **Frontend**  | HTML, CSS, Bootstrap, Thymeleaf |
-| **Database**  | MySQL |
-| **Build Tool**| Maven |
-| **Server**    | Embedded Tomcat |
+| Layer         | Technology Used               |
+|--------------|--------------------------------|
+| **Backend**  | Spring Boot (Java)             |
+| **Frontend** | HTML, CSS, Bootstrap, Thymeleaf|
+| **Database** | MySQL                          |
+| **Build Tool**| Maven                         |
+| **Server**   | Embedded Tomcat                |
 
 ---
 
@@ -63,3 +65,5 @@ ProjectMgmtSys/
 │   └── application.properties                 # Configuration file
 │
 └── pom.xml                                    # Maven dependencies
+
+
