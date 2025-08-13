@@ -1,6 +1,6 @@
 # 📚 College Project Management System
 
-![Project Logo](src/main/resources/static/img/logo.png)
+![Project Logo](ProjectMgmtSys/src/main/resources/static/img/logo.png)
 
 A **comprehensive and innovative web-based platform** designed to streamline the **management and coordination of academic projects** in engineering colleges.  
 It replaces outdated manual processes with **real-time collaboration**, **centralized data storage**, and **automated notifications** for **students**, **faculty guides**, and **administrators**.
